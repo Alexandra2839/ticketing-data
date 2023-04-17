@@ -1,19 +1,24 @@
 package com.learn.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@MappedSuperclass
 @AllArgsConstructor
 public class BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime insertDateTime;
     private Long insertUserId;
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime lastUpdateDateTime;
     private Long lastUpdateUserId;
 

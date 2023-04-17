@@ -1,7 +1,6 @@
 package com.learn.converter;
 
 import com.learn.dto.UserDTO;
-import com.learn.service.UserService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
