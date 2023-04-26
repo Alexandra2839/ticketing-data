@@ -29,11 +29,11 @@ public class Task extends BaseEntity{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
+    //@JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
+    //@JoinColumn(name = "employee_id")
     private User assignedEmployee;
 
 
