@@ -1,9 +1,11 @@
 package com.learn.service.impl;
 
+import com.learn.dto.ProjectDTO;
 import com.learn.dto.TaskDTO;
+import com.learn.entity.Project;
 import com.learn.entity.Task;
-import com.learn.entity.User;
 import com.learn.enums.Status;
+import com.learn.mapper.ProjectMapper;
 import com.learn.mapper.TaskMapper;
 import com.learn.repository.TaskRepository;
 import com.learn.service.TaskService;
@@ -20,9 +22,12 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
+    private final ProjectMapper projectMapper;
+
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -43,6 +48,20 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void update(TaskDTO dto) {
+        //find current task
+        Optional<Task> task = taskRepository.findById(dto.getId());
+        //convert to entity
+        Task convertedTask = taskMapper.covertToEntity(dto);
+
+        if(task.isPresent()) {
+           // convertedTask.setId(task.get().getId());
+
+            //set status and assigned employee to the converted object
+            convertedTask.setTaskStatus(task.get().getTaskStatus());
+            convertedTask.setAssignedDate(task.get().getAssignedDate());
+            //save the updated task in the db
+            taskRepository.save(convertedTask);
+        }
 
     }
 
@@ -61,6 +80,31 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO findById(Long id) {
+        Optional<Task> task = taskRepository.findById(id);
+
+        if (task.isPresent()){
+            return taskMapper.convertToDto(task.get());
+        }
         return null;
+    }
+
+    @Override
+    public int totalNonCompletedTask(String projectCode) {
+
+        return taskRepository.totalNonCompletedTasks(projectCode);
+    }
+
+    @Override
+    public int totalCompletedTask(String projectCode) {
+        return taskRepository.totalCompletedTasks(projectCode);
+    }
+
+    @Override
+    public void deleteByProject(ProjectDTO dto) {
+
+        Project project = projectMapper.covertToEntity(dto);
+        List<Task> tasks = taskRepository.findAllByProject(project);
+        tasks.forEach(task -> delete(task.getId()));
+
     }
 }

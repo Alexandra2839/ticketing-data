@@ -1,5 +1,6 @@
 package com.learn.service;
 
+import com.learn.dto.ProjectDTO;
 import com.learn.dto.TaskDTO;
 import com.learn.entity.Task;
 
@@ -12,6 +13,12 @@ public interface TaskService {
     void update (TaskDTO dto);
     void delete (Long id);
     TaskDTO findById(Long id);
+
+    int totalNonCompletedTask(String projectCode);
+
+    int totalCompletedTask(String projectCode);
+
+    void deleteByProject(ProjectDTO dto);
 
 
 
