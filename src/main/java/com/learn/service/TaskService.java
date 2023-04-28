@@ -3,6 +3,7 @@ package com.learn.service;
 import com.learn.dto.ProjectDTO;
 import com.learn.dto.TaskDTO;
 import com.learn.entity.Task;
+import com.learn.enums.Status;
 
 import java.util.List;
 
@@ -21,6 +22,11 @@ public interface TaskService {
     void deleteByProject(ProjectDTO dto);
 
     void completeByProject(ProjectDTO dto);
+
+    List<TaskDTO> listAllTasksByStatusIsNot(Status status);
+
+    List<TaskDTO> listAllTasksByStatus(Status status);
+
 
 
 

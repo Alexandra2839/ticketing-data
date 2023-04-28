@@ -2,13 +2,16 @@ package com.learn.service.impl;
 
 import com.learn.dto.ProjectDTO;
 import com.learn.dto.TaskDTO;
+import com.learn.dto.UserDTO;
 import com.learn.entity.Project;
 import com.learn.entity.Task;
 import com.learn.enums.Status;
 import com.learn.mapper.ProjectMapper;
 import com.learn.mapper.TaskMapper;
+import com.learn.mapper.UserMapper;
 import com.learn.repository.TaskRepository;
 import com.learn.service.TaskService;
+import com.learn.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,11 +26,15 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
 
     private final ProjectMapper projectMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper) {
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper, UserService userService, UserMapper userMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
         this.projectMapper = projectMapper;
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -117,5 +124,19 @@ public class TaskServiceImpl implements TaskService {
             update(taskDTO);
         });
 
+    }
+
+    @Override
+    public List<TaskDTO> listAllTasksByStatusIsNot(Status status) {
+        UserDTO loggedInUser = userService.findByUserName("john@employee.com");
+        List<Task> tasks = taskRepository.findAllByTaskStatusIsNotAndAssignedEmployee(status, userMapper.covertToEntity(loggedInUser));
+        return tasks.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> listAllTasksByStatus(Status status) {
+        UserDTO loggedInUser = userService.findByUserName("john@employee.com");
+        List<Task> tasks = taskRepository.findAllByTaskStatusAndAssignedEmployee(status, userMapper.covertToEntity(loggedInUser));
+        return tasks.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
     }
 }
