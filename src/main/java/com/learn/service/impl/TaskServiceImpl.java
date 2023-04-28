@@ -107,4 +107,15 @@ public class TaskServiceImpl implements TaskService {
         tasks.forEach(task -> delete(task.getId()));
 
     }
+
+    @Override
+    public void completeByProject(ProjectDTO dto) {
+        Project project = projectMapper.covertToEntity(dto);
+        List<Task> tasks = taskRepository.findAllByProject(project);
+        tasks.stream().map(taskMapper::convertToDto).forEach(taskDTO -> {
+            taskDTO.setTaskStatus(Status.COMPLETE);
+            update(taskDTO);
+        });
+
+    }
 }
