@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService {
            // convertedTask.setId(task.get().getId());
 
             //set status and assigned employee to the converted object
-            convertedTask.setTaskStatus(task.get().getTaskStatus());
+            convertedTask.setTaskStatus(dto.getTaskStatus() == null ? task.get().getTaskStatus() : dto.getTaskStatus());
             convertedTask.setAssignedDate(task.get().getAssignedDate());
             //save the updated task in the db
             taskRepository.save(convertedTask);
