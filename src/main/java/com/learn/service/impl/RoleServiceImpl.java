@@ -1,7 +1,7 @@
 package com.learn.service.impl;
 
 import com.learn.dto.RoleDTO;
-import com.learn.entity.Role;
+import com.learn.mapper.MapperUtil;
 import com.learn.mapper.RoleMapper;
 import com.learn.repository.RoleRepository;
 import com.learn.service.RoleService;
@@ -15,10 +15,12 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
+    private final MapperUtil mapperUtil;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper, MapperUtil mapperUtil) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
+        this.mapperUtil = mapperUtil;
     }
 
 
@@ -30,7 +32,9 @@ public class RoleServiceImpl implements RoleService {
         //use di to call service from repo
         // need to convert role to roleDTO using ModelMapper
 
-        return roleRepository.findAll().stream().map(roleMapper::convertToDto).collect(Collectors.toList());
+      //  return roleRepository.findAll().stream().map(roleMapper::convertToDto).collect(Collectors.toList());
+       // return roleRepository.findAll().stream().map(role -> mapperUtil.convert(role, new RoleDTO())).collect(Collectors.toList());
+        return roleRepository.findAll().stream().map(role -> mapperUtil.convert(role, RoleDTO.class)).collect(Collectors.toList());
     }
 
     @Override
