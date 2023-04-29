@@ -2,7 +2,9 @@ package com.learn.service;
 
 import com.learn.dto.ProjectDTO;
 import com.learn.dto.TaskDTO;
+import com.learn.dto.UserDTO;
 import com.learn.entity.Task;
+import com.learn.entity.User;
 import com.learn.enums.Status;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public interface TaskService {
     List<TaskDTO> listAllTasksByStatusIsNot(Status status);
 
     List<TaskDTO> listAllTasksByStatus(Status status);
+
+    List<TaskDTO> listAllNonCompletedByAssignedEmployee(UserDTO assignedEmployee);
 
 
 

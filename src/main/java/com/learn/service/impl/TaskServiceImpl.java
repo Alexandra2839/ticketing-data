@@ -5,6 +5,7 @@ import com.learn.dto.TaskDTO;
 import com.learn.dto.UserDTO;
 import com.learn.entity.Project;
 import com.learn.entity.Task;
+import com.learn.entity.User;
 import com.learn.enums.Status;
 import com.learn.mapper.ProjectMapper;
 import com.learn.mapper.TaskMapper;
@@ -137,6 +138,13 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDTO> listAllTasksByStatus(Status status) {
         UserDTO loggedInUser = userService.findByUserName("john@employee.com");
         List<Task> tasks = taskRepository.findAllByTaskStatusAndAssignedEmployee(status, userMapper.covertToEntity(loggedInUser));
+        return tasks.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> listAllNonCompletedByAssignedEmployee(UserDTO assignedEmployee) {
+        List<Task> tasks = taskRepository
+                .findAllByTaskStatusIsNotAndAssignedEmployee(Status.COMPLETE, userMapper.covertToEntity(assignedEmployee));
         return tasks.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
     }
 }
