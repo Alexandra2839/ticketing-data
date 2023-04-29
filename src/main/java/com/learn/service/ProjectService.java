@@ -1,6 +1,7 @@
 package com.learn.service;
 
 import com.learn.dto.ProjectDTO;
+import com.learn.dto.UserDTO;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface ProjectService {
     void complete (String code);
 
     List<ProjectDTO> listAllProjectDetails();
+
+    List<ProjectDTO> listAllNonCompletedByAssignedManager(UserDTO assignedManager);
 
 
 }
