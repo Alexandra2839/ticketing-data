@@ -39,7 +39,7 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public String insertTask(/*@Valid*/ @ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
+    public String insertTask(@Valid @ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
@@ -86,7 +86,7 @@ public class TaskController {
 //    }
 
     @PostMapping("/update/{id}")
-    public String updateTask(/*@Valid */@ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
+    public String updateTask(@Valid @ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
